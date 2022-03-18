@@ -63,7 +63,7 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
-          <AuthSocial />
+          {/* <AuthSocial /> */}
 
           <LoginForm />
 
@@ -76,7 +76,7 @@ export default function Login() {
             }}
           >
             Don’t have an account?&nbsp;
-            <Link variant="subtitle2" component={RouterLink} to="register" underline="hover">
+            <Link variant="subtitle2" component={RouterLink} to="/register" underline="hover">
               Get started
             </Link>
           </Typography>

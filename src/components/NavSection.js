@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 // material
@@ -154,12 +155,13 @@ NavSection.propTypes = {
 export default function NavSection({ navConfig, ...other }) {
   const { pathname } = useLocation();
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
+  const { isLoggedIn } = useSelector(state => state.auth)
 
   return (
     <Box {...other}>
       <List disablePadding>
         {navConfig.map((item) => (
-          <NavItem key={item.title} item={item} active={match} />
+          item.loginRequired === isLoggedIn && <NavItem key={item.title} item={item} active={match} />
         ))}
       </List>
     </Box>

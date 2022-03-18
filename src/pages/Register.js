@@ -40,7 +40,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Register() {
   return (
-    <RootStyle title="Register | Minimal-UI">
+    <RootStyle title="Register | Minimal-Booking">
       <AuthLayout>
         Already have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
@@ -50,27 +50,27 @@ export default function Register() {
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Manage the job more effectively with Minimal
+          Book your Aadhar appointment more effectively with Minimal
         </Typography>
         <img alt="register" src="/static/illustrations/illustration_register.png" />
       </SectionStyle>
 
       <Container>
         <ContentStyle>
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h4">
+              Get started now.
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Free forever. No credit card needed.
+              Book your appointment.
             </Typography>
           </Box>
 
-          <AuthSocial />
+          {/* <AuthSocial /> */}
 
           <RegisterForm />
 
-          <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+          {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" color="textPrimary">
               Terms of Service
@@ -80,7 +80,7 @@ export default function Register() {
               Privacy Policy
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           <Typography
             variant="subtitle2"
@@ -95,6 +95,7 @@ export default function Register() {
               Login
             </Link>
           </Typography>
+
         </ContentStyle>
       </Container>
     </RootStyle>

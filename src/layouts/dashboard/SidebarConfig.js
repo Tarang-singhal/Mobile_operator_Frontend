@@ -9,38 +9,21 @@ const sidebarConfig = [
   {
     title: 'dashboard',
     path: '/dashboard/app',
-    icon: getIcon('eva:pie-chart-2-fill')
-  },
-  {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: getIcon('eva:people-fill')
-  },
-  {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: getIcon('eva:shopping-bag-fill')
-  },
-  {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: getIcon('eva:file-text-fill')
+    icon: getIcon('eva:pie-chart-2-fill'),
+    loginRequired: true
   },
   {
     title: 'login',
     path: '/login',
-    icon: getIcon('eva:lock-fill')
+    icon: getIcon('eva:lock-fill'),
+    loginRequired: false
   },
   {
     title: 'register',
     path: '/register',
-    icon: getIcon('eva:person-add-fill')
+    icon: getIcon('eva:person-add-fill'),
+    loginRequired: false
   },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon('eva:alert-triangle-fill')
-  }
 ];
 
 export default sidebarConfig;

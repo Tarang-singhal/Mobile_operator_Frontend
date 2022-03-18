@@ -1,65 +1,68 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, FormControl, Select, InputLabel, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
+import { handleSignUpUserAction } from 'src/redux/actions/auth.action';
 
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    name: Yup.string().required('Name is required').max(20).min(3),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    phone: Yup.string().phone().required('Phone is required').length(10),
+    type: Yup.string().is(['user', 'agent']),
     password: Yup.string().required('Password is required')
   });
 
+  const navigateToDashboard = () => {
+    navigate('/dashboard/app', { replace: true })
+  }
+
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      name: '',
       email: '',
+      phone: '',
+      type: '',
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (user) => {
+      dispatch(handleSignUpUserAction(user, navigateToDashboard))
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const handleShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values, setFieldValue } = formik;
 
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
-            />
-
-            <TextField
-              fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
-            />
-          </Stack>
+        <Stack spacing={2}>
+          <TextField
+            fullWidth
+            autoComplete="name"
+            type="string"
+            label="Name"
+            {...getFieldProps('name')}
+            error={Boolean(touched.name && errors.name)}
+            helperText={touched.name && errors.name}
+            disabled={isSubmitting}
+          />
 
           <TextField
             fullWidth
@@ -69,7 +72,39 @@ export default function RegisterForm() {
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
+            disabled={isSubmitting}
           />
+
+          <TextField
+            fullWidth
+            autoComplete="phone"
+            type="phone"
+            label="Mobile no"
+            {...getFieldProps('phone')}
+            error={Boolean(touched.phone && errors.phone)}
+            helperText={touched.phone && errors.phone}
+            disabled={isSubmitting}
+          />
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+          >
+            <InputLabel >User Type</InputLabel>
+            <Select
+              // native
+              value={values.type}
+              {...getFieldProps('type')}
+              onChange={(e) => setFieldValue('type', e.target.value)}
+              label="User Type"
+              error={Boolean(touched.type && errors.type)}
+              helperText={touched.type && errors.type}
+              disabled={isSubmitting}
+            >
+              <MenuItem value='user' >Citizen</MenuItem>
+              <MenuItem value='agent'>Aadhar Agent</MenuItem>
+            </Select>
+          </FormControl>
 
           <TextField
             fullWidth
@@ -77,10 +112,11 @@ export default function RegisterForm() {
             type={showPassword ? 'text' : 'password'}
             label="Password"
             {...getFieldProps('password')}
+            disabled={isSubmitting}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                  <IconButton onClick={handleShowPassword} edge="end">
                     <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                   </IconButton>
                 </InputAdornment>
@@ -89,18 +125,29 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
-
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
-            Register
-          </LoadingButton>
         </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+          {/* <FormControlLabel
+            control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
+            label="Remember me"
+          />
+
+          <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
+            Forgot password?
+          </Link> */}
+        </Stack>
+
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+        >
+          Submit
+        </LoadingButton>
       </Form>
-    </FormikProvider>
+    </FormikProvider >
   );
 }

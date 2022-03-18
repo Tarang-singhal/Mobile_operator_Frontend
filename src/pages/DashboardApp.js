@@ -1,78 +1,91 @@
-// material
-import { Box, Grid, Container, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container } from '@mui/material';
+import { handleUserUpdateAction } from '../redux/actions/auth.action';
+// import MyMapComponent from '../sections/@dashboard/map';
+
 // components
 import Page from '../components/Page';
-import {
-  AppTasks,
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppNewsUpdate,
-  AppWeeklySales,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppCurrentSubject,
-  AppConversionRates
-} from '../sections/@dashboard/app';
-
-// ----------------------------------------------------------------------
+import Map from '../sections/@dashboard/google-map';
 
 export default function DashboardApp() {
+
+  const [loadingLocation, setLoadingLocation] = useState(true);
+  const { user, isLoggedIn } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+
+  const [loadingOpLocation, setLoadingOpLocation] = useState(true);
+  const [opLocations, setOpLocations] = useState([{ id: 1, lat: 32, lng: 32, slots: [{ start: "09:30AM", end: "10:30AM", available: false }, { start: "11:30AM", end: "12:01PM", available: true }] }])
+
+  const [selectedOp, setSelectedOp] = useState({})
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      if (isLoggedIn) {
+        dispatch(handleUserUpdateAction({
+          ...user,
+          lat: latitude,
+          lng: longitude
+        }))
+      }
+      setLoadingLocation(false)
+      console.log(latitude, longitude)
+    })
+
+
+  }, [isLoggedIn])
+
+  useEffect(() => {
+
+    async function fetchOpLocations() {
+      //
+
+
+
+      setLoadingOpLocation(false);
+    }
+
+    fetchOpLocations();
+  }, [])
+
+  // const PopHover = () => {
+  //   return (
+  //     <Popover
+  //       id="mouse-over-popover"
+  //       sx={{
+  //         pointerEvents: 'none',
+  //       }}
+  //       // open={open}
+  //       // anchorEl={anchorEl}
+  //       anchorOrigin={{
+  //         vertical: 'bottom',
+  //         horizontal: 'left',
+  //       }}
+  //       transformOrigin={{
+  //         vertical: 'top',
+  //         horizontal: 'left',
+  //       }}
+  //       // onClose={handlePopoverClose}
+  //       disableRestoreFocus
+  //     >
+  //       <Typography sx={{ p: 1 }}>I use Popover.</Typography>
+  //     </Popover>
+  //   )
+  // }
+
   return (
-    <Page title="Dashboard | Minimal-UI">
+    <Page title="Dashboard">
       <Container maxWidth="xl">
-        <Box sx={{ pb: 5 }}>
-          <Typography variant="h4">Hi, Welcome back</Typography>
-        </Box>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWeeklySales />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppNewUsers />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppItemOrders />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppBugReports />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppWebsiteVisits />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppConversionRates />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppNewsUpdate />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppOrderTimeline />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTrafficBySite />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppTasks />
-          </Grid>
-        </Grid>
+        {/* <MyMapComponent
+          lat={location.lat}
+          lng={location.lng}
+          opLocations={opLocations}
+          setSelectedOp={setSelectedOp}
+          selectedOp={selectedOp}
+        /> */}
       </Container>
+      <Map />
     </Page>
   );
 }

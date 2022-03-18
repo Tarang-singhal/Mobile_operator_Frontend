@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
@@ -43,6 +44,7 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
+  const { user } = useSelector(state => state.auth)
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -67,13 +69,13 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={user.image} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {user.name}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {user.type}
               </Typography>
             </Box>
           </AccountStyle>
@@ -84,7 +86,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"
           spacing={3}
@@ -113,7 +115,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             Upgrade to Pro
           </Button>
         </Stack>
-      </Box>
+      </Box> */}
     </Scrollbar>
   );
 
