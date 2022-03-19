@@ -26,17 +26,17 @@ export default function App() {
     } else if (!isLoggedIn && token) {
       console.log("🚀 ~ file: App.js ~ line 19 ~ App ~ isLoggedIn", isLoggedIn);
       dispatch(loggedInUser(JSON.parse(token)));
-      navigate("/dashboard/app", { replace: true });
+      navigate("/dashboard/app");
       socket.emit("connected", {
         user: JSON.parse(token),
       });
-      socket.on("disconnect", () => {
-        socket.emit("disconnected", {
-          user: JSON.parse(token),
-        });
-      });
+      // socket.on("disconnect", () => {
+      //   socket.emit("disconnected", {
+      //     user: JSON.parse(token),
+      //   });
+      // });
     }
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <ThemeConfig>

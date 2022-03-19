@@ -17,7 +17,8 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: '/dashboard/app', element: <DashboardApp /> },
+        { path: 'app', element: <DashboardApp /> },
+        { path: 'booking', element: <Register /> },
       ]
     },
     {

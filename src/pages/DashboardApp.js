@@ -7,17 +7,14 @@ import { handleUserUpdateAction } from '../redux/actions/auth.action';
 // components
 import Page from '../components/Page';
 import Map from '../sections/@dashboard/google-map';
+import { getActiveAgents } from 'src/redux/actions/agent.action';
 
 export default function DashboardApp() {
 
-  const [loadingLocation, setLoadingLocation] = useState(true);
   const { user, isLoggedIn } = useSelector(state => state.auth)
+  const [loadingLocation, setLoadingLocation] = useState(true);
   const dispatch = useDispatch();
 
-  const [loadingOpLocation, setLoadingOpLocation] = useState(true);
-  const [opLocations, setOpLocations] = useState([{ id: 1, lat: 32, lng: 32, slots: [{ start: "09:30AM", end: "10:30AM", available: false }, { start: "11:30AM", end: "12:01PM", available: true }] }])
-
-  const [selectedOp, setSelectedOp] = useState({})
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -37,16 +34,7 @@ export default function DashboardApp() {
   }, [isLoggedIn])
 
   useEffect(() => {
-
-    async function fetchOpLocations() {
-      //
-
-
-
-      setLoadingOpLocation(false);
-    }
-
-    fetchOpLocations();
+    dispatch(getActiveAgents())
   }, [])
 
   // const PopHover = () => {

@@ -1,4 +1,4 @@
-import { SIGNING_UP_USER, SAVE_USER_LOCATION, LOGGING_IN_USER, LOGGED_IN_USER, LOGOUT_USER, UPDATING_USER, UPDATED_USER, FETCHED_AUTH_USER, FETCHING_AUTH_USER, FETCHING_EMPLOYEE_DETAILS, FETCHED_EMPLOYEE_DETAILS } from '../actions/actionTypes';
+import { SIGNING_UP_USER, SAVE_USER_LOCATION, LOGGING_IN_USER, LOGGED_IN_USER, LOGOUT_USER, UPDATING_USER, UPDATED_USER } from '../actions/actionTypes';
 
 const initialState = {
     user: {},
@@ -39,29 +39,6 @@ export default function (state = initialState, action) {
                 ...state,
                 user: { ...state.user, ...action.user }
             };
-        case FETCHING_AUTH_USER:
-            return {
-                ...state,
-                isFetchingAuthReducer: action.isFetchingAuthReducer
-            };
-        case FETCHED_AUTH_USER:
-            return {
-                ...state,
-                user: { ...state.user, ...action.user }
-            }
-        case FETCHING_EMPLOYEE_DETAILS:
-            return {
-                ...state,
-                isFetchingEmployeeDetails: action.isFetchingEmployeeDetails
-            }
-        case FETCHED_EMPLOYEE_DETAILS:
-            return {
-                ...state,
-                employeeDetails: {
-                    ...state.employeeDetails,
-                    [action.userId]: action.employeeDetails
-                }
-            }
         case SAVE_USER_LOCATION:
             return {
                 ...state,
