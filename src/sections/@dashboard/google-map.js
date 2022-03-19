@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { LocationOn } from '@mui/icons-material';
 import Marker from '../../components/Marker';
+import { useNavigate } from "react-router-dom";
 
 const greatPlaceStyle = {
     position: 'absolute',
@@ -12,16 +13,23 @@ const greatPlaceStyle = {
 
 
 export default function Map() {
+    const navigate = useNavigate();
     const { user } = useSelector(state => state.auth)
+    const { agents = [] } = useSelector(state => state.agent);
+
+    const onClickAgent = (agent) => {
+        navigate('/dashboard/booking', { state: agent })
+    }
+
     return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '80vh', width: '100%' }}>
+        <div style={{ height: '85vh', width: '100%' }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_MAP_KEY }}
                 defaultCenter={{ lat: 32, lng: 32 }}
                 center={{ lat: user.lat, lng: user.lng }}
                 yesIWantToUseGoogleMapApiInternals
-                defaultZoom={17}
+                defaultZoom={20}
                 options={{ fullscreenControl: false }}
             >
 
@@ -33,6 +41,18 @@ export default function Map() {
                     lng={user.lng}
                     text="You"
                 />
+
+                {
+                    agents.length > 0 && agents.map((agent) => {
+                        return (
+                            <Marker
+                                lat={agent.lat}
+                                lng={agent.lng}
+                                onClick={() => { onClickAgent(agent) }}
+                            />
+                        )
+                    })
+                }
 
 
 

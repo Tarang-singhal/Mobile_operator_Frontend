@@ -6,6 +6,7 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
+import Booking from './pages/Booking';
 import NotFound from './pages/Page404';
 
 // ----------------------------------------------------------------------
@@ -17,8 +18,8 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: 'app', element: <DashboardApp /> },
-        { path: 'booking', element: <Register /> },
+        { path: 'app', element: <DashboardApp />},
+        { path: 'booking', element: <Booking /> },
       ]
     },
     {

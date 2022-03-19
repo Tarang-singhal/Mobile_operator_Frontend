@@ -154,15 +154,17 @@ NavSection.propTypes = {
 
 export default function NavSection({ navConfig, ...other }) {
   const { pathname } = useLocation();
-  const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
+  // const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
+  const match = (path) => path.split('/')[1] === pathname.split('/')[1];
   const { isLoggedIn } = useSelector(state => state.auth)
 
   return (
     <Box {...other}>
       <List disablePadding>
-        {navConfig.map((item) => (
-          item.loginRequired === isLoggedIn && <NavItem key={item.title} item={item} active={match} />
-        ))}
+        {navConfig.map((item) => {
+          // console.log(item.path.split('/'), pathname.split('/'))
+          return item.loginRequired === isLoggedIn && <NavItem key={item.title} item={item} active={match} />
+        })}
       </List>
     </Box>
   );

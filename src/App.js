@@ -9,6 +9,7 @@ import GlobalStyles from "./theme/globalStyles";
 import ScrollToTop from "./components/ScrollToTop";
 import { BaseOptionChartStyle } from "./components/charts/BaseOptionChart";
 import { loggedInUser } from "./redux/actions/auth.action";
+import { getActiveAgents } from './redux/actions/agent.action';
 // ----------------------------------------------------------------------
 
 const SERVER_URL = process.env.REACT_APP_API_URL;
@@ -17,6 +18,10 @@ export default function App() {
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getActiveAgents())
+  }, [])
 
   useEffect(() => {
     const token = localStorage.getItem("token");

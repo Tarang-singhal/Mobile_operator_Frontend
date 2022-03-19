@@ -7,7 +7,6 @@ import { handleUserUpdateAction } from '../redux/actions/auth.action';
 // components
 import Page from '../components/Page';
 import Map from '../sections/@dashboard/google-map';
-import { getActiveAgents } from 'src/redux/actions/agent.action';
 
 export default function DashboardApp() {
 
@@ -27,15 +26,10 @@ export default function DashboardApp() {
         }))
       }
       setLoadingLocation(false)
-      console.log(latitude, longitude)
     })
 
 
   }, [isLoggedIn])
-
-  useEffect(() => {
-    dispatch(getActiveAgents())
-  }, [])
 
   // const PopHover = () => {
   //   return (
