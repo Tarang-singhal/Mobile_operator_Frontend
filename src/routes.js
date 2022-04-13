@@ -8,6 +8,8 @@ import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Booking from './pages/Booking';
 import NotFound from './pages/Page404';
+import AllBookings from './pages/AllBookings';
+import AddMoney from './pages/addMoney'
 
 // ----------------------------------------------------------------------
 
@@ -18,8 +20,16 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: 'app', element: <DashboardApp />},
+        { path: 'app', element: <DashboardApp /> },
         { path: 'booking', element: <Booking /> },
+      ]
+    },
+    {
+      path: '/bookings',
+      element: <DashboardLayout />,
+      children: [
+        { path: '', element: <AllBookings /> },
+        { path: 'addMoney', element: <AddMoney /> },
       ]
     },
     {

@@ -13,6 +13,12 @@ const sidebarConfig = [
     loginRequired: true
   },
   {
+    title: 'bookings',
+    path: '/bookings',
+    icon: getIcon('fluent:wallet-credit-card-16-regular'),
+    loginRequired: true
+  },
+  {
     title: 'login',
     path: '/login',
     icon: getIcon('eva:lock-fill'),

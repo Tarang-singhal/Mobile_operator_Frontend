@@ -20,8 +20,10 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getActiveAgents())
-  }, [])
+    setTimeout(() => {
+      dispatch(getActiveAgents())
+    }, 5000)
+  })
 
   useEffect(() => {
     const token = localStorage.getItem("token");

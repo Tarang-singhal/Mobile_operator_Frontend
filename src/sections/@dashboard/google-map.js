@@ -4,6 +4,7 @@ import GoogleMapReact from 'google-map-react';
 import { LocationOn } from '@mui/icons-material';
 import Marker from '../../components/Marker';
 import { useNavigate } from "react-router-dom";
+import { func } from 'prop-types';
 
 const greatPlaceStyle = {
     position: 'absolute',
@@ -45,7 +46,8 @@ export default function Map() {
                 {
                     agents.length > 0 && agents.map((agent) => {
                         return (
-                            <Marker
+                            agent._id != user._id && <Marker
+                                title={agent.name}
                                 lat={agent.lat}
                                 lng={agent.lng}
                                 onClick={() => { onClickAgent(agent) }}

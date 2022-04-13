@@ -61,8 +61,8 @@ export const handleLoginUserAction = (user, callback) => {
 export const handleUserUpdateAction = (user) => {
     return async dispatch => {
         try {
-            // const { data } = await axios.post(BASE_URL + '/user/update', user);
-            // console.log(data);
+            const { data } = await axios.patch(BASE_URL + `/user/${user._id}`, user);
+            console.log(data);
             localStorage.setItem('token', JSON.stringify(user));
             dispatch(updateUser(user))
         } catch (error) {
@@ -74,4 +74,20 @@ export const handleUserUpdateAction = (user) => {
 export const handleLogoutAction = () => {
     localStorage.removeItem('token');
     window.location.reload();
+}
+
+export const handleSlotBooking = (details, callback) => {
+    return async dispatch => {
+        try {
+            const { data } = await axios.post(BASE_URL + '/slot/bookSlot', {
+                userId: details.userId,
+                agentId: details.agentId,
+                slotNumber: details.slotNumber
+            });
+            if (typeof callback === 'function') callback();
+            console.log(data);
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
 }
