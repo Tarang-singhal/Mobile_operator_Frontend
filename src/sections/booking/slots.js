@@ -32,6 +32,11 @@ export default function Slots({ agent }) {
     },
     // validationSchema: RegisterSchema,
     onSubmit: ({ slotNumber }) => {
+
+      if (user.walletAmount < 50) {
+        return new Error("Insufficient Balance")
+      }
+
       const details = {
         agentId: agent._id,
         userId: user._id,
@@ -68,7 +73,7 @@ export default function Slots({ agent }) {
               label="Choose Timing"
               error={Boolean(touched.slotNumber && errors.slotNumber)}
               helperText={touched.slotNumber && errors.slotNumber}
-              disabled={isSubmitting}
+              disabled={isSubmitting || user.walletAmount < 50}
             >
               {
                 agent.slots.map((slot, idx) => {
@@ -90,8 +95,9 @@ export default function Slots({ agent }) {
           variant="contained"
           style={{ marginTop: '20px' }}
           loading={isSubmitting}
+          disabled={user.walletAmount < 50}
         >
-          Book
+          {user.walletAmount < 50 ? "Insufficient Balance" : "Pay ₹50 & Book"}
         </LoadingButton>
       </Form>
     </FormikProvider >

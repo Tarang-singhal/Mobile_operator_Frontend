@@ -9,7 +9,8 @@ import DashboardApp from './pages/DashboardApp';
 import Booking from './pages/Booking';
 import NotFound from './pages/Page404';
 import AllBookings from './pages/AllBookings';
-import AddMoney from './pages/addMoney'
+import AddMoney from './pages/addMoney';
+import Wallet from './pages/wallet';
 
 // ----------------------------------------------------------------------
 
@@ -28,8 +29,15 @@ export default function Router() {
       path: '/bookings',
       element: <DashboardLayout />,
       children: [
-        { path: '', element: <AllBookings /> },
-        { path: 'addMoney', element: <AddMoney /> },
+        { path: '', element: <AllBookings /> }
+      ]
+    },
+    {
+      path: '/wallet',
+      element: <DashboardLayout />,
+      children: [
+        { path: '', element: <Wallet /> },
+        { path: 'addMoney', element: <AddMoney /> }
       ]
     },
     {

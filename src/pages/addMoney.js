@@ -6,13 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 // material
-import { Stack, TextField, Button, InputAdornment, FormControl, Select, InputLabel, MenuItem, Container } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Stack, TextField, Button, Container } from '@mui/material';
+import { PaytmButton } from '../paytm-button/paytmButton'
 // component
-// import Iconify from '../../components/Iconify';
-import { handleSlotBooking } from 'src/redux/actions/auth.action';
 import Page from '../components/Page';
-import { CheckoutProvider, Checkout, injectCheckout } from 'paytm-blink-checkout-react'
 
 
 
@@ -36,19 +33,13 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function AddMoney() {
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth)
 
-    const [isCheckout, setCheckout] = useState(false)
 
     const RegisterSchema = Yup.object().shape({
         amount: Yup.number().min(10).max(500)
     });
-
-    const navigateToDashboard = () => {
-        navigate('/dashboard/app', { replace: true })
-    }
 
     const formik = useFormik({
         initialValues: {
@@ -56,14 +47,10 @@ export default function AddMoney() {
         },
         validationSchema: RegisterSchema,
         onSubmit: ({ amount }) => {
-            setCheckout(true)
+            // setCheckout(true)
             console.log(amount)
         }
     });
-
-    const handleShowPassword = () => {
-        setShowPassword((show) => !show);
-    };
 
     const buttonAmounts = [50, 100, 150]
 
@@ -73,6 +60,7 @@ export default function AddMoney() {
         <RootStyle title="Add Money | Wallet">
             <Container>
                 <ContentStyle>
+                    <h2 style={{ marginBottom: 20 }}>Enter Amount</h2>
                     <FormikProvider value={formik}>
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Stack spacing={2}>
@@ -106,7 +94,12 @@ export default function AddMoney() {
                                 }
                             </div>
 
-                            <LoadingButton
+                            <PaytmButton
+                                amount={values.amount}
+                                isSubmitting={isSubmitting}
+                            />
+
+                            {/* <LoadingButton
                                 fullWidth
                                 size="large"
                                 type="submit"
@@ -115,52 +108,11 @@ export default function AddMoney() {
                                 loading={isSubmitting}
                             >
                                 ADD
-                            </LoadingButton>
+                            </LoadingButton> */}
                         </Form>
                     </FormikProvider >
                 </ContentStyle>
             </Container>
-            {
-                isCheckout && <CheckoutProvider
-                    config={defaultMerchantConfiguration}
-                    openInPopup="false"
-                    env='STAGE'
-                >
-                    <Checkout />
-                </CheckoutProvider>
-            }
         </RootStyle>
     );
 }
-
-let defaultMerchantConfiguration = {
-    "root": "",
-    "style": { "bodyBackgroundColor": "", "bodyColor": "", "themeBackgroundColor": "", "themeColor": "", "headerBackgroundColor": "", "headerColor": "", "errorColor": "", "successColor": "" },
-    "flow": "DEFAULT",
-    "data": {
-        "orderId": "", "token": "", "tokenType": "GUEST", "amount": "",
-        "userDetail": { "mobileNumber": "", "name": "" }
-    },
-    "merchant": { "mid": "", "name": "", "logo": "", "redirect": true, "hidePaytmBranding": false },
-    "mapClientMessage": {
-        "static": {
-            "label": { "paymodeSelection": "Select an option to pay", "paymodeOtherSelection": "Select from other options", "saveCardSelection": "SELECT A SAVED CARD" }, "error": {}
-        },
-        "header": {
-            "label": { "otpSend": "OTP requested successfully", "orderID": "Order ID", "account": "Account", "switch": "Switch", "selectOption": "Select an option to pay" }, "error": {}
-        },
-        "footer": {
-            "label": { "message": "100% Secure Payments Powered by Paytm" }, "error": {}
-        },
-        "offers": {
-            "label": { "message": "Exclusive Offers for You" }, "error": {}
-        },
-        "processing": { "label": { "heading": "Processing Your Payment", "info": "Please do not close this window or press back while we confirm your payment status" }, "error": {} },
-        "retry": { "label": { "paymentFailed": "Payment Failed", "info": "Please do not close this window or press back while we confirm your payment status" }, "error": {} },
-        "card": { "label": { "cardNumber": "Card Number", "expiry": "Expiry / Validity", "cvv": "CVV", "savedCard": "Save this card for future payments" }, "error": { "cardNumber": "Please enter valid card number", "expiry": "invalid Expiry Date", "cvv": "Please enter valid cvv." } },
-        "ppbl": { "label": { "changeNumber": "Change Balance", "availableBalance": "Available Balance" }, "error": { "passcode": "Please enter valid passcode" } }, "pdc": {
-            "label": { "changeNumber": "Change Balance", "availableBalance": "Available Balance" },
-            "error": { "passcode": "Please enter valid passcode" }
-        }, "upi": { "label": {}, "error": { "required": "Please enter a UPI ID", "valid": "Please enter a valid UPI ID" } }, "cod": { "label": {} }, "login": { "label": { "labelMessage": "Pay using your saved payment instruments" }, "error": {} }
-    }, "labels": {}, "payMode": { "labels": {}, "filter": [], "order": [] }, "handler": {}
-};

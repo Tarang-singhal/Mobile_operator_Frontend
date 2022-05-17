@@ -1,19 +1,26 @@
 import react, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Button } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { IconButton } from '@mui/material';
 import { Add } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import dayjs from 'dayjs';
+import { handleGetUserData } from '../redux/actions/auth.action'
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const BASE_URL = process.env.REACT_APP_API_URL
 
 export default function AllBookings() {
     const navigate = useNavigate();
     const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
 
     const [slots, setSlots] = useState([])
 
+
+    useEffect(() => {
+        dispatch(handleGetUserData(user._id));
+    }, [])
 
     useEffect(async () => {
         const { data: { data } } = await Axios.get(BASE_URL + `/slot/slots/${user._id}`)
@@ -21,10 +28,17 @@ export default function AllBookings() {
         setSlots(data.slots)
     }, [])
 
+    const refresh = async () => {
+        const { data: { data } } = await Axios.get(BASE_URL + `/slot/slots/${user._id}`)
+        console.log(data)
+        setSlots(data.slots)
+    }
+
     return (
         <div style={{ width: '100%', marginTop: 30, padding: 10 }}>
-            <div style={{ margin: 10 }}>
-                All Meetings
+            <div style={{ margin: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span>All Meetings</span>
+                <IconButton children={<RefreshIcon />} onClick={() => refresh()} />
             </div>
             {
                 slots.map(slot => {

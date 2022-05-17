@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GlobalStyles from "./theme/globalStyles";
 import ScrollToTop from "./components/ScrollToTop";
 import { BaseOptionChartStyle } from "./components/charts/BaseOptionChart";
-import { loggedInUser } from "./redux/actions/auth.action";
+import { loggedInUser, handleGetUserData } from "./redux/actions/auth.action";
 import { getActiveAgents } from './redux/actions/agent.action';
 // ----------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ export default function App() {
       navigate("/", { replace: true });
     } else if (!isLoggedIn && token) {
       console.log("🚀 ~ file: App.js ~ line 19 ~ App ~ isLoggedIn", isLoggedIn);
-      dispatch(loggedInUser(JSON.parse(token)));
+      dispatch(handleGetUserData(JSON.parse(token)._id));
       navigate("/dashboard/app");
       socket.emit("connected", {
         user: JSON.parse(token),

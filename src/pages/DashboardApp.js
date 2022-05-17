@@ -22,7 +22,8 @@ export default function DashboardApp() {
         dispatch(handleUserUpdateAction({
           ...user,
           lat: latitude,
-          lng: longitude
+          lng: longitude,
+          updateType: "location"
         }))
       }
       setLoadingLocation(false)

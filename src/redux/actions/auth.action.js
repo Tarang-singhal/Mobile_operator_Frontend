@@ -62,7 +62,7 @@ export const handleUserUpdateAction = (user) => {
     return async dispatch => {
         try {
             const { data } = await axios.patch(BASE_URL + `/user/${user._id}`, user);
-            console.log(data);
+            // console.log(data);
             localStorage.setItem('token', JSON.stringify(user));
             dispatch(updateUser(user))
         } catch (error) {
@@ -70,6 +70,30 @@ export const handleUserUpdateAction = (user) => {
         }
     }
 }
+
+export const handleGetUserData = (id) => {
+    return async dispatch => {
+        try {
+            const { data } = await axios.get(BASE_URL + `/user/${id}`);
+            console.log(data);
+            localStorage.setItem('token', JSON.stringify(data.data));
+            dispatch(updateUser(data.data))
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+}
+
+// export const handleGetUserData = async (id) => {
+//     try {
+//         const { data } = await axios.get(BASE_URL + `/user/${id}`);
+//         console.log(data);
+//         localStorage.setItem('token', JSON.stringify(data.data));
+//         return data.data
+//     } catch (error) {
+//         console.log('error', error);
+//     }
+// }
 
 export const handleLogoutAction = () => {
     localStorage.removeItem('token');

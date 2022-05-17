@@ -32,17 +32,20 @@ export default function (state = initialState, action) {
         case UPDATING_USER:
             return {
                 ...state,
-                isUpdatingUser: action.isUpdatingUser
+                isUpdatingUser: action.isUpdatingUser,
+                isLoggedIn: true
             };
         case UPDATED_USER:
             return {
                 ...state,
-                user: { ...state.user, ...action.user }
+                user: { ...state.user, ...action.user },
+                isLoggedIn: true
             };
         case SAVE_USER_LOCATION:
             return {
                 ...state,
-                user: { ...state.user, ...action.location }
+                user: { ...state.user, ...action.location },
+                isLoggedIn: true
             }
         default:
             return state;
